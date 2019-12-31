@@ -125,8 +125,7 @@
     - 1월 2일 ~ 2월 21일
 - ~~여자친구와 헤어짐~~
 
-<img src="./12월 맥북구입.jpeg" width="300">
-<img src="./12월 플레이오토 퇴사.jpeg" width="300">
+<img src="./12월 맥북구입.jpeg" width="300"><img src="./12월 플레이오토 퇴사.jpeg" width="300">
 
 <br></br>
 
