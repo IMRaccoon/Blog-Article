@@ -12,6 +12,8 @@
 
 - [JavaScript, 비동기??](/JavaScript&TypeScript/What_is_Asynchronous/README.md)
 
+- [JavaScript, 비동기를 처리하자](/JavaScript&TypeScript/Deal_with_Asynchronous/README.md)
+
 ## Git
 
 - [GitHub, 프로젝트 관리하기](/Git/Manage_Project_with_GitHub/README.md)
