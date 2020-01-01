@@ -111,6 +111,9 @@ console.log('Bye');
 
 기본적으로 `setTimeout` 함수는 매개변수로 콜백함수를 내장하고 있습니다.
 
+> 여기서 잠깐 setTimeout 함수를 설명하자면, 첫 번째 인자는 콜백함수를, 두 번째 인자는 지연시간(ms 단위)를 말합니다.  
+> setTimeout 함수는 비동기적 API를 제외한 모든 코드가 실행된 뒤에야 콜백 함수를 실행합니다. - yuz413
+
 `setTimeout` 함수가 의미하는 것은 2초 뒤에 'Async Code'를 출력한다는 의미입니다.
 
 그럼 실제로 실행했을 때는, 어떻게 출력되는 지 봅시다.
@@ -210,6 +213,29 @@ call 2
 이렇게 출력됩니다. Web API로 갔다가 바로 Event Queue에 들어가서
 
 Stack 이 비어질 때까지 기다리는 것입니다.
+
+조금 더 극단적인 예시를 들자면
+
+```JavaScript
+let count = 0;
+
+setTimeout(() => console.log('Timeout'), 0);
+
+while (true) {
+  if (count === 1000000000) {
+    console.log('the end');
+    break;
+  }
+  count++;
+}
+```
+
+이럼에도 불구하고 실행순서는 다음과 같습니다.
+
+```zsh
+the end
+Timeout
+```
 
 자 그럼 이제 다시 본론으로 돌아가 봅시다.
 

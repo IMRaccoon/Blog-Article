@@ -224,7 +224,7 @@ then, catch를 붙여서 사용하는 경우가 많습니다.
 
 <br>
 
-### then으로 연결하기
+### Promise Chaining, then 끼리 연결하기
 
 아까 콜백함수의 지옥처럼 Promise도 지옥을 만들 수 있습니다.
 
@@ -290,24 +290,104 @@ addOne(4)
   .then(res1 => {
     return addTen(res1);
   })
-  .catch(err => {
-    return console.log(err);
-  })
   .then(res2 => {
     return addHundred(res2);
   })
   .then(res3 => {
     console.log(res3);
+  })
+  .catch(err => {
+    console.log(err);
   });
 ```
 
 위의 코드에서 `addOne` 함수는 reject를 수행합니다.
 
-이럴 경우 두 번째에 있는 catch에서 잡힙니다. 하지만, 맨 밑에 있는
+분명 첫 번째 then에서 reject가 되었을 것이고,
 
-then에서는 NaN 가 출력되게 됩니다.
+두 번째 then에서 무슨 일이 일어날지 모릅니다.
 
-이럴 경우를 대비해 항상 맨마지막에는 catch를 한번 더 걸어주는 것이 좋습니다.
+자연스럽게도 reject가 일어날 시에는 가장 가까운 catch로 내려갑니다.
+
+그럼 첫 번째에서 오류가 났을 시에 따로 처리하고 이 모든 then의 연결을 없애려면 어떻게 해야될까요?
+
+일단 첫 번째 방법으로는 `throw new Error` 를 통해 에러 출력을 하고 프로그램을 종료합니다.
+
+두 번째로는 매번 catch문에 reject를 받아주는 함수를 만들면 됩니다.
+
+```JavaScript
+function addOne(num) {
+  return new Promise((resolve, reject) => reject(num));
+}
+
+function addTen(num) {
+  return new Promise(resolve => resolve(num + 10));
+}
+
+function addHundred(num) {
+  return new Promise(resolve => resolve(num + 100));
+}
+
+function catchError(err) {
+  console.log('Error Occur with', err);
+  return Promise.reject(err);
+}
+
+addOne(4)
+  .then(res1 => {
+    return addTen(res1);
+  })
+  .catch(err => {
+    return catchError(err);
+  })
+  .then(res2 => {
+    return addHundred(res2);
+  })
+  .catch(err => {
+    return catchError(err);
+  })
+  .then(res3 => {
+    console.log(res3);
+  })
+  .catch(err => {
+    console.log('Error', err);
+  });
+```
+
+보이는 것처럼 `catchError` 함수에서 Error가 발생했음을 알립니다.
+
+그리고 다시 Promise reject함수를 실행시켜 다음 catch 문으로 가도록 알립니다.
+
+이런 식으로 방패를 만들어 놓는다면 어디서 에러가 발생했는 지,
+
+그리고 then으로 처리해줄때마다 필요한 함수를 만들어서 `Promise.resolve`로 반환할 수도 있습니다.
+
+```zsh
+# 결과
+Error Occur with 4
+Error Occur with 4
+Error 4
+```
+
+그리고 마지막으로 이런 함수들을 더 축약해서 사용할 수도 있음을 보여드리겠습니다.
+
+함수형 프로그래밍적인 사고를 약간 도입하면 다음과 줄여서 같이 표현할 수도 있습니다.
+
+```JavaScript
+addOne(4)
+  .then(addTen)
+  .catch(catchError)
+  .then(addHundred)
+  .catch(catchError)
+  .then(res3 => {
+    console.log(res3);
+  })
+  .catch(err => {
+    console.log('Error', err);
+  });
+```
+
+함수형 프로그래밍은 다음에 다루어 보도록 하겠습니다.
 
 <br>
 
