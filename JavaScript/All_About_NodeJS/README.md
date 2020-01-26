@@ -54,6 +54,8 @@ Node.js는 JavaScript를 브라우저가 아닌 외부에서 실행할 수 있�
 
 Node.js는 Google에서 제공하는 Chrome의 V8엔진을 기반으로 하여 실행됩니다.
 
+<img src="images/chrome-v8-engine.jpeg" width="200">
+
 > JavaScript의 엔진에 대한 설명은 [여기에](../What_is_Asynchronous/README.md) 있습니다.
 
 해당 엔진을 기반으로 해서 만들어진 서버 사이드 플랫폼으로 정의할 수 있습니다.
